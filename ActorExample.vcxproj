@@ -150,6 +150,7 @@
     <ClInclude Include="ActorExample.h" />
     <ClInclude Include="BitmapManager.h" />
     <ClInclude Include="D2DFramework.h" />
+    <ClInclude Include="ComException.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,7 @@
 #include "D2DFramework.h"
+#include"BitmapManager.h"
+
 #pragma comment (lib,"d2d1.lib")
-#pragma comment (lib,"WindowsCodecs.lib")
 
 using namespace Microsoft::WRL;
 
@@ -12,6 +13,9 @@ HRESULT D2DFramework::Init(HINSTANCE hInstacne, LPCWSTR title, UINT width, UINT 
 	InitWindow(hInstacne, title, width, height);
 	InitD2D();
 
+	hr = BitmapManager::Instance().Initialize(mspRenderTarget.Get());
+	ThrowIfFailed(hr);
+
 	ShowWindow(mHwnd, SW_SHOW);
 	UpdateWindow(mHwnd);
 
@@ -20,9 +24,10 @@ HRESULT D2DFramework::Init(HINSTANCE hInstacne, LPCWSTR title, UINT width, UINT 
 
 void D2DFramework::Release()
 {
+	BitmapManager::Instance().Release();
+
 	mspRenderTarget.Reset();
 	mspD2DFactory.Reset();
-	mspWICFactory.Reset();
 
 	CoUninitialize();
 }
@@ -115,9 +120,6 @@ HRESULT D2DFramework::InitWindow(HINSTANCE hInstacne, LPCWSTR title, UINT width,
 HRESULT D2DFramework::InitD2D()
 {
 	HRESULT hr{};
-	hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, 
-		CLSCTX_INPROC_SERVER, IID_PPV_ARGS(mspWICFactory.GetAddressOf()));
-	ThrowIfFailed(hr);
 
 	// 1. Factory »ý¼º
 	hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, 
@@ -129,8 +131,6 @@ HRESULT D2DFramework::InitD2D()
 	//D2D1_RENDER_TARGET_PROPERTIES rtp;
 	//ZeroMemory();
 	//rtp.dpiX;...
-
-
 
 	return CreateDeviceResources();
 }

@@ -18,14 +18,13 @@ public:
 
 protected:
 	D2DFramework* mpFramework; //일반포인터 소유권X, 참조만 사용 use a
-	Microsoft::WRL::ComPtr<ID2D1Bitmap> mspBitmap; // have a 
+	ID2D1Bitmap* mpBitmap; // have a 
 	
 	float mX;
 	float mY;
 	float mOpacity;
 
 private:
-	HRESULT LoadWICImage(LPCWSTR filename);
 	void Draw(float x, float y, float opacity = 1.0f);
 };
 
